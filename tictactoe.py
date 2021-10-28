@@ -178,6 +178,12 @@ def generate_ai_move():
     current_state = ai_decided_state
 
 
+def ignore_mouse_click():
+    for any_event in pygame.event.get():
+        if any_event.type == pygame.MOUSEBUTTONDOWN:
+            del any_event
+
+
 pygame.init()
 game_window = create_game_window()
 pygame.display.set_caption("TIC TAC TOE")
@@ -199,6 +205,7 @@ while True:
                         reset_game_window()
                         continue
                     generate_ai_move()
+                    ignore_mouse_click()
                     if evaluate_state(current_state) is not None:
                         reset_game_window()
     pygame.display.update()
