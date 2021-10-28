@@ -179,9 +179,9 @@ def generate_ai_move():
 
 
 def ignore_mouse_click():
-    for any_event in pygame.event.get():
-        if any_event.type == pygame.MOUSEBUTTONDOWN:
-            del any_event
+    for any_new_event in pygame.event.get():
+        if any_new_event.type == pygame.MOUSEBUTTONDOWN:
+            del any_new_event
 
 
 pygame.init()
