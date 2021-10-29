@@ -10,6 +10,7 @@ global current_state
 def reset_state():
     global current_state
     current_state = np.zeros((3, 3), dtype="int8")
+    print("Grid Reset!")
 
 
 def find_depth(state):
@@ -172,6 +173,7 @@ def put_o(cell):
 
 def generate_ai_move():
     global current_state
+    print("AI is thinking!")
     ai_decided_state = get_best_state(current_state, find_depth(current_state), False)[1]
     ai_decided_cell = get_move_index(current_state, ai_decided_state)
     put_o(ai_decided_cell)
@@ -185,6 +187,7 @@ def ignore_mouse_click():
 
 
 pygame.init()
+print("Welcome! Tic-Tac-Toe!")
 game_window = create_game_window()
 pygame.display.set_caption("TIC TAC TOE")
 draw_grid(game_window)
@@ -193,6 +196,7 @@ reset_state()
 while True:
     for any_event in pygame.event.get():
         if any_event.type == pygame.QUIT:
+            print("Good Bye! Loser!")
             sys.exit()
         if any_event.type == pygame.MOUSEBUTTONDOWN:
             if check_click_validity(any_event.pos):
@@ -202,10 +206,12 @@ while True:
                     put_x(target_cell)
                     pygame.time.wait(100)
                     if evaluate_state(current_state) is not None:
+                        print("Game Over!")
                         reset_game_window()
                         continue
                     generate_ai_move()
                     ignore_mouse_click()
                     if evaluate_state(current_state) is not None:
+                        print("Game Over!")
                         reset_game_window()
     pygame.display.update()
