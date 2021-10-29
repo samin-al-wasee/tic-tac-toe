@@ -214,4 +214,3 @@ while True:
                     if evaluate_state(current_state) is not None:
                         print("Game Over!")
                         reset_game_window()
-    pygame.display.update()
