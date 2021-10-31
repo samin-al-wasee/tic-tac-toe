@@ -216,11 +216,13 @@ while True:
                     pygame.time.wait(100)
                     if evaluate_state(current_state) is not None:
                         print("Game Over!")
+                        ignore_mouse_click()
                         reset_game_window()
                         continue
                     generate_ai_move()
                     ignore_mouse_click()
                     if evaluate_state(current_state) is not None:
                         print("Game Over!")
+                        ignore_mouse_click()
                         reset_game_window()
                         
