@@ -59,7 +59,7 @@ def generate_states(state, is_maximizing):
     return get_possible_states(state, -1)
 
 
-def get_best_state(state, depth, is_maximizing):
+def get_best_state(state, depth, is_maximizing, alpha, beta):
     best_possible_value = -math.inf
     best_possible_state = None
     worst_possible_value = math.inf
@@ -69,16 +69,22 @@ def get_best_state(state, depth, is_maximizing):
         return current_value, state
     if is_maximizing:
         for state in generate_states(state, is_maximizing):
-            current_value = get_best_state(state, depth - 1, not is_maximizing)[0]
+            current_value = get_best_state(state, depth - 1, not is_maximizing, alpha, beta)[0]
             if max(best_possible_value, current_value) == current_value:
                 best_possible_value = current_value
                 best_possible_state = state
+            alpha = max(alpha, best_possible_value)
+            if alpha > beta:
+                break
         return best_possible_value, best_possible_state
     for state in generate_states(state, is_maximizing):
-        current_value = get_best_state(state, depth - 1, not is_maximizing)[0]
+        current_value = get_best_state(state, depth - 1, not is_maximizing, alpha, beta)[0]
         if min(worst_possible_value, current_value) == current_value:
             worst_possible_value = current_value
             worst_possible_state = state
+        beta = min(beta, worst_possible_value)
+        if alpha > beta:
+            break
     return worst_possible_value, worst_possible_state
 
 
@@ -173,8 +179,11 @@ def put_o(cell):
 
 def generate_ai_move():
     global current_state
+    guaranteed_best_value = -math.inf
+    guaranteed_worst_value = math.inf
     print("AI is thinking!")
-    ai_decided_state = get_best_state(current_state, find_depth(current_state), False)[1]
+    ai_decided_state = get_best_state(current_state, find_depth(current_state), False,
+                                      guaranteed_best_value, guaranteed_worst_value)[1]
     ai_decided_cell = get_move_index(current_state, ai_decided_state)
     put_o(ai_decided_cell)
     current_state = ai_decided_state
@@ -214,3 +223,4 @@ while True:
                     if evaluate_state(current_state) is not None:
                         print("Game Over!")
                         reset_game_window()
+                        
