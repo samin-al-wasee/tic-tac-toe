@@ -1,2 +1,5 @@
 # tictactoe
- unbeatable tic-tac-toe a.i. implemented using minimax algorithm.
+ tic-tac-toe a.i.
+used minimax algorithm.
+used alpha-beta pruning to minimize the number of state evaluation.
+used pygame to create gui.
