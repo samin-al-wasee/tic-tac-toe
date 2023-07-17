@@ -6,6 +6,7 @@ import sys
 
 global current_state
 
+
 def reset_state():
     global current_state
     current_state = np.zeros((3, 3), dtype="int8")
@@ -21,11 +22,19 @@ def check_win_condition(state):
     check_columns = np.sum(state, axis=0)
     check_primary_diagonal = np.trace(state)
     check_secondary_diagonal = np.trace(state[::-1])
-    if np.any(check_columns == 3) or np.any(check_rows == 3) \
-            or check_primary_diagonal == 3 or check_secondary_diagonal == 3:
+    if (
+        np.any(check_columns == 3)
+        or np.any(check_rows == 3)
+        or check_primary_diagonal == 3
+        or check_secondary_diagonal == 3
+    ):
         return True, +3
-    elif np.any(check_columns == -3) or np.any(check_rows == -3) \
-            or check_primary_diagonal == -3 or check_secondary_diagonal == -3:
+    elif (
+        np.any(check_columns == -3)
+        or np.any(check_rows == -3)
+        or check_primary_diagonal == -3
+        or check_secondary_diagonal == -3
+    ):
         return True, -3
     return False, 0
 
@@ -68,7 +77,9 @@ def get_best_state(state, depth, is_maximizing, alpha, beta):
         return current_value, state
     if is_maximizing:
         for state in generate_states(state, is_maximizing):
-            current_value = get_best_state(state, depth - 1, not is_maximizing, alpha, beta)[0]
+            current_value = get_best_state(
+                state, depth - 1, not is_maximizing, alpha, beta
+            )[0]
             if max(best_possible_value, current_value) == current_value:
                 best_possible_value = current_value
                 best_possible_state = state
@@ -77,7 +88,9 @@ def get_best_state(state, depth, is_maximizing, alpha, beta):
                 break
         return best_possible_value, best_possible_state
     for state in generate_states(state, is_maximizing):
-        current_value = get_best_state(state, depth - 1, not is_maximizing, alpha, beta)[0]
+        current_value = get_best_state(
+            state, depth - 1, not is_maximizing, alpha, beta
+        )[0]
         if min(worst_possible_value, current_value) == current_value:
             worst_possible_value = current_value
             worst_possible_state = state
@@ -102,8 +115,11 @@ def generate_random_color_code(start, end):
 
 def create_game_window():
     window_size = [1250, 650]
-    bg_color = [generate_random_color_code(150, 255), generate_random_color_code(150, 255),
-                generate_random_color_code(150, 255)]
+    bg_color = [
+        generate_random_color_code(150, 255),
+        generate_random_color_code(150, 255),
+        generate_random_color_code(150, 255),
+    ]
     window = pygame.display.set_mode(window_size)
     window.fill(bg_color)
     return window
@@ -112,7 +128,9 @@ def create_game_window():
 def draw_line_animate(window, begin, end, color, width):
     if begin[0] == end[0]:
         for point in range(begin[1], end[1]):
-            pygame.draw.line(window, color, (begin[0], point), (end[0], point + 1), width)
+            pygame.draw.line(
+                window, color, (begin[0], point), (end[0], point + 1), width
+            )
             pygame.display.update()
     for point in range(begin[0], end[0]):
         pygame.draw.line(window, color, (point, begin[1]), (point + 1, end[1]), width)
@@ -120,8 +138,11 @@ def draw_line_animate(window, begin, end, color, width):
 
 
 def draw_grid(window):
-    line_color = [generate_random_color_code(0, 150), generate_random_color_code(0, 150),
-                  generate_random_color_code(0, 150)]
+    line_color = [
+        generate_random_color_code(0, 150),
+        generate_random_color_code(0, 150),
+        generate_random_color_code(0, 150),
+    ]
     line_width = 5
     draw_line_animate(window, [525, 25], [525, 625], line_color, line_width)
     draw_line_animate(window, [725, 25], [725, 625], line_color, line_width)
@@ -131,8 +152,13 @@ def draw_grid(window):
 
 def reset_game_window():
     pygame.time.wait(500)
-    game_window.fill((generate_random_color_code(150, 255), generate_random_color_code(150, 255),
-                      generate_random_color_code(150, 255)))
+    game_window.fill(
+        (
+            generate_random_color_code(150, 255),
+            generate_random_color_code(150, 255),
+            generate_random_color_code(150, 255),
+        )
+    )
     pygame.display.update()
     draw_grid(game_window)
     reset_state()
@@ -149,26 +175,44 @@ def decide_cell(mouse_click_offset):
 
 
 def calculate_x_position(cell):
-    return [375 + cell[0] * 200, 75 + cell[1] * 200], [475 + cell[0] * 200, 175 + cell[1] * 200], \
-           [475 + cell[0] * 200, 75 + cell[1] * 200], [375 + cell[0] * 200, 175 + cell[1] * 200]
+    return (
+        [375 + cell[0] * 200, 75 + cell[1] * 200],
+        [475 + cell[0] * 200, 175 + cell[1] * 200],
+        [475 + cell[0] * 200, 75 + cell[1] * 200],
+        [375 + cell[0] * 200, 175 + cell[1] * 200],
+    )
 
 
 def put_x(cell):
-    x_color = [generate_random_color_code(100, 150), generate_random_color_code(100, 150),
-               generate_random_color_code(100, 150)]
+    x_color = [
+        generate_random_color_code(100, 150),
+        generate_random_color_code(100, 150),
+        generate_random_color_code(100, 150),
+    ]
     x_width = 10
-    left_diagonal_start, left_diagonal_end, right_diagonal_start, right_diagonal_end \
-        = calculate_x_position(cell)
-    pygame.draw.line(game_window, x_color, left_diagonal_start, left_diagonal_end, x_width)
+    (
+        left_diagonal_start,
+        left_diagonal_end,
+        right_diagonal_start,
+        right_diagonal_end,
+    ) = calculate_x_position(cell)
+    pygame.draw.line(
+        game_window, x_color, left_diagonal_start, left_diagonal_end, x_width
+    )
     pygame.display.update()
     pygame.time.wait(100)
-    pygame.draw.line(game_window, x_color, right_diagonal_start, right_diagonal_end, x_width)
+    pygame.draw.line(
+        game_window, x_color, right_diagonal_start, right_diagonal_end, x_width
+    )
     pygame.display.update()
 
 
 def put_o(cell):
-    o_color = [generate_random_color_code(50, 100), generate_random_color_code(50, 100),
-               generate_random_color_code(50, 100)]
+    o_color = [
+        generate_random_color_code(50, 100),
+        generate_random_color_code(50, 100),
+        generate_random_color_code(50, 100),
+    ]
     o_width = 5
     o_center = [425 + cell[0] * 200, 125 + cell[1] * 200]
     o_radius = 65
@@ -181,8 +225,13 @@ def generate_ai_move():
     guaranteed_best_value = -math.inf
     guaranteed_worst_value = math.inf
     print("AI is thinking!")
-    ai_decided_state = get_best_state(current_state, find_depth(current_state), False,
-                                      guaranteed_best_value, guaranteed_worst_value)[1]
+    ai_decided_state = get_best_state(
+        current_state,
+        find_depth(current_state),
+        False,
+        guaranteed_best_value,
+        guaranteed_worst_value,
+    )[1]
     ai_decided_cell = get_move_index(current_state, ai_decided_state)
     put_o(ai_decided_cell)
     current_state = ai_decided_state
@@ -224,4 +273,3 @@ while True:
                         print("Game Over!")
                         ignore_mouse_click()
                         reset_game_window()
-                        
