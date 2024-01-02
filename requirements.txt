@@ -1,0 +1,12 @@
+black==23.12.1
+click==8.1.7
+isort==5.13.2
+mypy-extensions==1.0.0
+numpy==1.23.2
+packaging==23.2
+pathspec==0.12.1
+platformdirs==4.1.0
+pygame==2.1.2
+ruff==0.1.9
+tomli==2.0.1
+typing_extensions==4.9.0

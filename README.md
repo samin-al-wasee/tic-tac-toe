@@ -1,5 +1,9 @@
-# tictactoe
- tic-tac-toe a.i.
-used minimax algorithm.
-used alpha-beta pruning to minimize the number of state evaluation.
-used pygame to create gui.
+# Tic-Tac-Toe
+
+## An AI agent for the popular traditional Tic-Tac-Toe game
+
+- Python
+- Pygame
+- NumPy
+- Minimax
+- Alpha-Beta pruning

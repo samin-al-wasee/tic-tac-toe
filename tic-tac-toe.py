@@ -1,8 +1,9 @@
 import math
-import numpy as np
-import pygame
 import random
 import sys
+
+import numpy as np
+import pygame
 
 global current_state
 
